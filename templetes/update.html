@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Edit - Stock Market data{% endblock title %}
+{% block body %}
+
+<!-- table -->
+<div class="container">
+    <h1 class="text-center my-3">Edit the data here</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Trade Code</th>
+                <th scope="col">High</th>
+                <th scope="col">Low</th>
+                <th scope="col">Open</th>
+                <th scope="col">Close</th>
+                <th scope="col">Volume</th>
+                <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <form action="updateRecord/{{stMarket.id}}" method="post">
+                    {% csrf_token %}
+                    <td><input name="date" value="{{stMarket.date|date:'Y-m-d'}}"></td>
+                    <td><input name="trade_code" value="{{ stMarket.trade_code }}"></td>
+                    <td><input name="high" value="{{ stMarket.high|intcomma }}"></td>
+                    <td><input name="low" value="{{ stMarket.low|intcomma }}"></td>
+                    <td><input name="open" value="{{ stMarket.open|intcomma }}"></td>
+                    <td><input name="close" value="{{ stMarket.close|intcomma }}"></td>
+                    <td><input name="volume" value="{{ stMarket.volume|intcomma }}"></td>
+                    <td><input type="submit" value="Save"></td>
+                </form>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+{% endblock body %}
