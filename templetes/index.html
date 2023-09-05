@@ -18,10 +18,30 @@
     <div id="chart-container">{{ chart2 | safe }}</div>
 </div>
 
-<!-- table -->
+<!-- table to show the data -->
 <div class="container">
     <h1 class="text-center">Stock Market Data</h1>
-    <P class="text-center"><strong> you can see total {{total}} data</P></strong>
+    <P class="text-center"><strong> Total result:{{ total }} || showing 100 of them </strong></P>
+    
+    <!-- pagination Control -->
+    <div class="text-center">
+        <span class="step-links">
+            {% if data.has_previous %}
+                <a class="mx-1" href="?page=1">&laquo; first</a>
+                <a class="mx-1" href="?page={{ data.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current-page">
+                Page {{ data.number }} of {{ data.paginator.num_pages }}.
+            </span>
+
+            {% if data.has_next %}
+                <a class="mx-1" href="?page={{ data.next_page_number }}">next</a>
+                <a class="mx-1" href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -38,19 +58,37 @@
         <tbody>
             {% for element in data %}
             <tr>
-                <td>{{element.date|date:"Y-m-d" }}</td>
+                <td>{{ element.date|date:"Y-m-d" }}</td>
                 <td>{{ element.trade_code }}</td>
                 <td>{{ element.high|intcomma }}</td>
                 <td>{{ element.low|intcomma }}</td>
                 <td>{{ element.open|intcomma }}</td>
                 <td>{{ element.close|intcomma }}</td>
                 <td>{{ element.volume|intcomma }}</td>
-                <td><a href="update/{{element.id}}">Edit</a></button></td>
-
+                <td><a href="update/{{ element.id }}">Edit</a></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Pagination Controls (Repeat at the bottom, if desired) -->
+    <div class="text-center">
+        <span class="step-links">
+            {% if data.has_previous %}
+                <a class="mx-1" href="?page=1">&laquo; first</a>
+                <a class="mx-1" href="?page={{ data.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current-page">
+                Page {{ data.number }} of {{ data.paginator.num_pages }}.
+            </span>
+
+            {% if data.has_next %}
+                <a class="mx-1" href="?page={{ data.next_page_number }}">next</a>
+                <a class="mx-1" href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
 
 <!-- js to update the chart based on dropdown selection -->

@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
+from django.core.paginator import Paginator
 
 # homepage (2 charts and table of the data)
 def index(request):
@@ -23,6 +24,9 @@ def index(request):
 
     #all the data of stock market
     data = StockMarket.objects.all()
+    paginator = Paginator(data, 100)
+    page = request.GET.get('page', 1)
+    data_page = paginator.get_page(page)
     #total data of stock market
     total=StockMarket.objects.all().count()
 
@@ -30,7 +34,7 @@ def index(request):
         'chart': fig.to_html(),
         'chart2': fig2,
         'trade_codes':tradeCode,
-        'data': data,
+        'data': data_page,
         'total':total,
     }
     return render(request,'index.html', context)
